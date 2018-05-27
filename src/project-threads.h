@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <function.h>
+#include <string.h>
+#include <syslog.h>
 
 /*
  * struct
@@ -33,8 +35,20 @@ typedef struct cList{
 /*
  * Prototypes
  */
-cList* create_cList(char*);
+cList* create_cList(char*,char*);
 void add_cStep(cList*,char*);
 void free_all(cList* list);
+void display(FILE* stream,cList* list);
+
+#ifdef LOGS
+
+#define START_DEBUG(filename) openlog(filename, LOG_PID|LOG_ODELAY, LOG_LOCAL7)
+#define DEBUG_PRINT(fmt, args...) syslog(LOG_DEBUG, fmt, ##args)
+#define INFO_PRINT(fmt, args...) syslog(LOG_INFO, fmt, ##args)
+#define ERROR_PRINT(fmt, args...) syslog(LOG_ERR, fmt, ##args)
+
+#endif
+
 
 #endif /* PROJECT_THREADS_H_ */
+
